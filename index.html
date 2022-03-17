@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HangMan</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1 id="pageTitle" class="display-1">HangMan</h1>
+        <h6 class="display-6">-the Game-</h6>
+    </header>
+    <div id="startGamePlace">
+        <div>
+            <img src='images/hangMan picture.jpg' id="firstPicture" class="rounded mx-auto d-block">
+        </div>
+        <input type="submit" value="Start Game" id="startGame" class="btn btn-primary btn-lg">
+    </div>
+    <div id="selectDificulty">
+        <div id="dificultyLevels">
+            <h1 class="display-5">Beginner --> around 5 letters</h1>
+            <h1 class="display-5">Advanced --> more then 7 letters</h1>
+        </div>
+        <div class="input-group mb-3">
+            <button class="btn btn-secondary" type="button">select</button>
+            <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                <option selected>Choose the dificulty</option>
+                <option value="1">Beginner</option>
+                <option value="2">Advanced</option>
+            </select>
+        </div>
+        <p id="paragraph" class="lead">This is version of the classic letter guessing game called Hangman. You are shown a set of blank letters that match a word or phrase and you have to guess what these letters are to reveal the hidden word. </p>
+    </div>
+</body>
+
+</html>
