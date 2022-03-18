@@ -27,14 +27,18 @@
             <h1 class="display-5">Advanced --> more then 7 letters</h1>
         </div>
         <div class="input-group mb-3">
-            <button class="btn btn-secondary" type="button">select</button>
-            <select class="form-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+            <button id="selectDificultyButton" class="btn btn-secondary" type="button">select</button>
+            <select class="form-select" id="inputGroupSelect" aria-label="Example select with button addon">
                 <option selected>Choose the dificulty</option>
-                <option value="1">Beginner</option>
-                <option value="2">Advanced</option>
+                <option value="beginner">Beginner</option>
+                <option value="advanced">Advanced</option>
             </select>
         </div>
         <p id="paragraph" class="lead">This is version of the classic letter guessing game called Hangman. You are shown a set of blank letters that match a word or phrase and you have to guess what these letters are to reveal the hidden word. </p>
+    </div>
+    <div id="game">
+        <div id="totalLifes"></div>
+        <div id="putTheLetters"></div>
     </div>
 </body>
 
