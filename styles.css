@@ -84,7 +84,7 @@ input[type=text] {
     margin: 10px 26% 10px 26%;
 }
 
-#keyboardLetter {
+.keyboardLetter {
     border-style: dashed;
     width: 2em;
     font-size: larger;
