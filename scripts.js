@@ -3,6 +3,7 @@ let goodWord = 0;
 let theWord;
 document.getElementById('game').style.display = 'none';
 document.getElementById('selectDificulty').style.display = 'none';
+showMode("", 'none');
 //Adding Events to the submit Buttons
 document.getElementById('Player1').addEventListener('click', chooseDificulty);
 document.getElementById('Player2').addEventListener('click', insertWord);
@@ -13,6 +14,7 @@ function chooseDificulty() {
         document.getElementById('startGamePlace').remove();
     }
     document.getElementById('selectDificulty').style.display = 'initial';
+    showMode("Single Player Mode", 'flex');
     document.getElementById('selectDificultyButton').addEventListener('click', selectedOption);
 }
 
@@ -21,17 +23,18 @@ function selectedOption() {
     if (document.getElementById('inputGroupSelect').value === 'Choose the dificulty') {
     } else {
         document.getElementById('selectDificulty').style.display = 'none';
-        document.getElementById('game').style.display = 'flex';
         generateTheGame1Player();
     }
 }
 
 //Function for generating the game interface(1 Player only!)
 function generateTheGame1Player() {
+    showMode("", 'none');
+    document.getElementById('game').style.display = 'flex';
     generateTheHearts();
     generateTheWord();
-    generateTheKeyboard();
     infoTextFunction("Your word has " + theWord.length + " letters");
+    generateTheKeyboard();
 }
 
 //Function for inserting the word(2 Players only!)
@@ -39,7 +42,7 @@ function insertWord() {
     if (document.getElementById('startGamePlace')) {
         document.getElementById('startGamePlace').remove();
     }
-    document.getElementById('game').style.display = 'flex';
+    showMode("Player vs Player Mode", 'flex');
     const yourWord = document.createElement('input');
     yourWord.type = 'text';
     yourWord.id = 'yourWord';
@@ -66,11 +69,13 @@ function insertWord() {
 
 //Funnction for generating the game interface(2 Players only!)
 function generateTheGame2Players() {
+    showMode("", 'none');
     document.getElementById('insertWord').style.display = 'none';
+    document.getElementById('game').style.display = 'flex';
     generateTheHearts();
     generateTheWord();
-    generateTheKeyboard();
     infoTextFunction("Your word has " + theWord.length + " letters");
+    generateTheKeyboard();
 }
 
 //Function for generating the player's chances(lifes)
@@ -181,9 +186,15 @@ function keyboardEdit(letterPressed, color) {
     document.getElementById(letterPressed).style.backgroundColor = color;
 }
 
-//Fucntion for editing the info-text
+//Function for editing the info-text
 function infoTextFunction(desiredText) {
     document.getElementById('infoText').innerText = desiredText;
+}
+
+//Function for editing the InfoText about the game mode
+function showMode(gameMode, displayMode) {
+    document.getElementById('GameModeTitle').innerText = gameMode;
+    document.getElementById('GameModeTitle').style.display = displayMode;
 }
 
 //Function for revealing the results
@@ -214,21 +225,19 @@ function restartSwitchButtons() {
 
 //Event-function for restarting the game
 function resetGame() {
-    document.getElementById('resetButton').remove();
-    document.getElementById('switchButton').remove();
     if (document.getElementById('yourWord')) {
         document.getElementById('insertWord').style.display = 'flex';
         document.getElementById('yourWord').value = '';
+        showMode("Player vs Player Mode", 'flex');
     } else {
         document.getElementById('selectDificulty').style.display = 'initial';
+        showMode("Single Player Mode", 'flex');
     }
     removeFeatures();
 }
 
 //Function for switching the game mode
 function switchMode() {
-    document.getElementById('resetButton').remove();
-    document.getElementById('switchButton').remove();
     if (document.getElementById('yourWord')) {
         document.getElementById('yourWord').remove();
         document.getElementById('submitWord').remove();
@@ -242,6 +251,9 @@ function switchMode() {
 
 //Function for removing the inside features
 function removeFeatures() {
+    document.getElementById('resetButton').remove();
+    document.getElementById('switchButton').remove();
+    document.getElementById('game').style.display = 'none';
     document.getElementById('keyboard').style.visibility = 'visible';
     const keyboardLetters = new Array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
     for (let i = 0; i < keyboardLetters.length; i++) {

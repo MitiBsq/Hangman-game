@@ -42,6 +42,14 @@ header {
     width: 500px;
 }
 
+#GameModeTitle{
+    display: flex;
+    justify-content: center;
+    margin: 10%;
+    font-size: xx-large;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
 #selectDificulty{
     display: flex;
     justify-content: center;
