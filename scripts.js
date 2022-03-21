@@ -23,18 +23,8 @@ function selectedOption() {
     if (document.getElementById('inputGroupSelect').value === 'Choose the dificulty') {
     } else {
         document.getElementById('selectDificulty').style.display = 'none';
-        generateTheGame1Player();
+        generateTheGame();
     }
-}
-
-//Function for generating the game interface(1 Player only!)
-function generateTheGame1Player() {
-    showMode("", 'none');
-    document.getElementById('game').style.display = 'flex';
-    generateTheHearts();
-    generateTheWord();
-    infoTextFunction("Your word has " + theWord.length + " letters");
-    generateTheKeyboard();
 }
 
 //Function for inserting the word(2 Players only!)
@@ -58,19 +48,22 @@ function insertWord() {
     document.getElementById('insertWord').appendChild(submitWord);
     //Fixing the minimum word length
     yourWord.addEventListener('keyup', () => {
-        if (yourWord.value.length > 3) {
+        if (yourWord.value.length > 3 && yourWord.value != 0) {
             submitWord.disabled = false;
         } else {
             submitWord.disabled = true;
         }
     })
-    submitWord.addEventListener('click', generateTheGame2Players);
+    submitWord.addEventListener('click', generateTheGame);
 }
 
-//Funnction for generating the game interface(2 Players only!)
-function generateTheGame2Players() {
+//Function for generating the game interface(both Game modes)
+function generateTheGame() {
+    //for verifying the game mode
+    if (document.getElementById('yourWord')) {
+        document.getElementById('insertWord').style.display = 'none';
+    }
     showMode("", 'none');
-    document.getElementById('insertWord').style.display = 'none';
     document.getElementById('game').style.display = 'flex';
     generateTheHearts();
     generateTheWord();
