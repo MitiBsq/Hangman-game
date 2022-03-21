@@ -9,7 +9,9 @@ document.getElementById('Player2').addEventListener('click', insertWord);
 
 //Function for choosing the beginner/advanced levels of the game(1 Player only!)
 function chooseDificulty() {
-    document.getElementById('startGamePlace').remove();
+    if (document.getElementById('startGamePlace')) {
+        document.getElementById('startGamePlace').remove();
+    }
     document.getElementById('selectDificulty').style.display = 'initial';
     document.getElementById('selectDificultyButton').addEventListener('click', selectedOption);
 }
@@ -34,17 +36,31 @@ function generateTheGame1Player() {
 
 //Function for inserting the word(2 Players only!)
 function insertWord() {
-    document.getElementById('startGamePlace').remove();
+    if (document.getElementById('startGamePlace')) {
+        document.getElementById('startGamePlace').remove();
+    }
     document.getElementById('game').style.display = 'flex';
     const yourWord = document.createElement('input');
     yourWord.type = 'text';
     yourWord.id = 'yourWord';
     yourWord.maxLength = '20';
+    yourWord.minLength = '4';
+    yourWord.placeholder = "Min 4 characters...Max 20 characters";
     document.getElementById('insertWord').appendChild(yourWord);
     const submitWord = document.createElement('button');
+    submitWord.disabled = true;
     submitWord.innerText = "I choose this word";
     submitWord.className = 'btn btn-dark btn-lg';
+    submitWord.id = "submitWord";
     document.getElementById('insertWord').appendChild(submitWord);
+    //Fixing the minimum word length
+    yourWord.addEventListener('keyup', () => {
+        if (yourWord.value.length > 3) {
+            submitWord.disabled = false;
+        } else {
+            submitWord.disabled = true;
+        }
+    })
     submitWord.addEventListener('click', generateTheGame2Players);
 }
 
@@ -139,17 +155,17 @@ function analyseTheSituation() {
     if (document.getElementById('totalLifes').childNodes.length === 0) {
         infoTextFunction("Saddly, You've lost!\n\n" + "You're word was:");
         showResults();
-        setTimeout(function () { restartButton() }, 1.0 * 2000);
+        setTimeout(function () { restartSwitchButtons() }, 1.0 * 2000);
     } else {
         if (goodWord === theWord.length) {
             if (document.getElementById('totalLifes').childNodes.length === 7) {
                 infoTextFunction("Congratulation! You've done a PERFECT SCORE by winning without losing a single heart!");
                 showResults();
-                setTimeout(function () { restartButton() }, 1.0 * 2000);
+                setTimeout(function () { restartSwitchButtons() }, 1.0 * 2000);
             } else {
                 infoTextFunction("Congratulation! You've won!");
                 showResults();
-                setTimeout(function () { restartButton() }, 1.0 * 2000);
+                setTimeout(function () { restartSwitchButtons(); }, 1.0 * 2000);
             }
         } else {
             if (goodWord > parseInt(theWord.length / 2)) {
@@ -181,24 +197,51 @@ function showResults() {
 }
 
 //Creating the restart button
-function restartButton() {
+function restartSwitchButtons() {
     const resetButton = document.createElement('button');
     resetButton.innerText = "Restart Game";
     resetButton.className = 'btn btn-dark btn-lg';
     resetButton.id = 'resetButton';
-    document.getElementById('resetButtonPlace').appendChild(resetButton);
+    document.getElementById('resetSwitchPlace').appendChild(resetButton);
     resetButton.addEventListener('click', resetGame);
+    const switchButton = document.createElement('button');
+    switchButton.innerText = "Switch Game Mode";
+    switchButton.className = 'btn btn-dark btn-lg';
+    switchButton.id = 'switchButton';
+    document.getElementById('resetSwitchPlace').appendChild(switchButton);
+    switchButton.addEventListener('click', switchMode);
 }
 
 //Event-function for restarting the game
 function resetGame() {
     document.getElementById('resetButton').remove();
+    document.getElementById('switchButton').remove();
     if (document.getElementById('yourWord')) {
         document.getElementById('insertWord').style.display = 'flex';
         document.getElementById('yourWord').value = '';
     } else {
         document.getElementById('selectDificulty').style.display = 'initial';
     }
+    removeFeatures();
+}
+
+//Function for switching the game mode
+function switchMode() {
+    document.getElementById('resetButton').remove();
+    document.getElementById('switchButton').remove();
+    if (document.getElementById('yourWord')) {
+        document.getElementById('yourWord').remove();
+        document.getElementById('submitWord').remove();
+        chooseDificulty()
+    } else {
+        document.getElementById('insertWord').style.display = 'flex';
+        insertWord();
+    }
+    removeFeatures();
+}
+
+//Function for removing the inside features
+function removeFeatures() {
     document.getElementById('keyboard').style.visibility = 'visible';
     const keyboardLetters = new Array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
     for (let i = 0; i < keyboardLetters.length; i++) {
