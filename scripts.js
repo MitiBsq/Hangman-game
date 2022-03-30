@@ -67,7 +67,7 @@ function generateTheGame() {
     document.getElementById('game').style.display = 'flex';
     generateTheHearts();
     generateTheWord();
-    infoTextFunction("Your word has " + theWord.length + " letters");
+    infoTextFunction("Your word has " + theWord.join('').length + " letters");
     generateTheKeyboard();
 }
 
@@ -85,27 +85,35 @@ function generateTheHearts() {
 
 //Function for generating the word
 function generateTheWord() {
+    //Making the theWord an array of words
     if (document.getElementById('yourWord')) {
-        theWord = document.getElementById('yourWord').value.toUpperCase();
+        theWord = document.getElementById('yourWord').value.toUpperCase().split(' ');
     } else {
-        theWord = localStorage.getItem(document.getElementById('inputGroupSelect').value + Math.floor(Math.random() * 5));
+        theWord = [localStorage.getItem(document.getElementById('inputGroupSelect').value + Math.floor(Math.random() * 5))];
     }
     //Generates the text inputs
     const letters = new Array();
-    for (let i = 0; i < theWord.length; i++) {
-        letters[i] = document.createElement('input');
-        letters[i].type = 'text';
-        letters[i].maxLength = '1';
-        letters[i].setAttribute('size', '2')
-        letters[i].id = 'theLetter' + i;
-        letters[i].addEventListener('keyup', () => {
-            if (letters[i].value != "") {
-                let letterValue = letters[i].value[0].toUpperCase();
-                letters[i].value = '';
-                checkTheWord(letterValue);
-            }
-        })
-        document.getElementById('putTheLetters').appendChild(letters[i]);
+    for (let i = 0; i < theWord.length; ++i) {
+        letters[i] = new Array();
+        let setOfPlaces = document.createElement('div');
+        setOfPlaces.id = "setOfPlaces" + i;
+        setOfPlaces.className = 'setOfLetters';
+        document.getElementById('putTheLetters').appendChild(setOfPlaces)
+        for (let j = 0; j < theWord[i].length; ++j) {
+            letters[i][j] = document.createElement('input');
+            letters[i][j].type = 'text';
+            letters[i][j].maxLength = '1';
+            letters[i][j].setAttribute('size', '2')
+            letters[i][j].id = 'theLetter' + i + j;
+            letters[i][j].addEventListener('keyup', () => {
+                if (letters[i][j].value != "") {
+                    let letterValue = letters[i][j].value[0].toUpperCase();
+                    letters[i][j].value = '';
+                    checkTheWord(letterValue);
+                }
+            })
+            setOfPlaces.appendChild(letters[i][j]);
+        }
     }
 }
 
@@ -123,21 +131,29 @@ function generateTheKeyboard() {
         });
         document.getElementById('keyboard').appendChild(keyboard[i]);
     }
+    //For showing the first/last letters of the Word
+    for (let i = 0; i < theWord.length; ++i) {
+        document.getElementById(theWord[i][0]).click()
+        document.getElementById(theWord[i][theWord[i].length - 1]).click();
+    }
 }
 
 //Function for analysing the key choosed by the player
 function checkTheWord(letterPressed) {
     let check = false;
+    //If a letter is pressed again to not remove one heart
     if (document.getElementById(letterPressed).disabled === true) {
         check = true;
     } else {
-        for (let i = 0; i < theWord.length; i++) {
-            if (letterPressed === theWord[i]) {
-                document.getElementById('theLetter' + i).value = letterPressed;
-                document.getElementById('theLetter' + i).disabled = true;
-                keyboardEdit(letterPressed, 'yellowgreen');
-                check = true;
-                ++goodWord;
+        for (let i = 0; i < theWord.length; ++i) {
+            for (let j = 0; j < theWord[i].length; ++j) {
+                if (letterPressed === theWord[i][j]) {
+                    document.getElementById('theLetter' + i + j).value = letterPressed;
+                    document.getElementById('theLetter' + i + j).disabled = true;
+                    keyboardEdit(letterPressed, 'yellowgreen');
+                    check = true;
+                    ++goodWord;
+                }
             }
         }
     }
@@ -155,7 +171,7 @@ function analyseTheSituation() {
         showResults();
         setTimeout(function () { restartSwitchButtons() }, 1.0 * 2000);
     } else {
-        if (goodWord === theWord.length) {
+        if (goodWord === theWord.join('').length) {
             if (document.getElementById('totalLifes').childNodes.length === 7) {
                 infoTextFunction("Congratulation! You've done a PERFECT SCORE by winning without losing a single heart!");
                 showResults();
@@ -166,8 +182,8 @@ function analyseTheSituation() {
                 setTimeout(function () { restartSwitchButtons(); }, 1.0 * 2000);
             }
         } else {
-            if (goodWord > parseInt(theWord.length / 2)) {
-                infoTextFunction("You have only " + (theWord.length - goodWord) + " letters left");
+            if (goodWord > parseInt(theWord.join('').length / 2)) {
+                infoTextFunction("You have only " + (theWord.join('').length - goodWord) + " letters left");
             }
         }
     }
@@ -195,8 +211,10 @@ function showResults() {
     document.getElementById('keyboard').style.visibility = 'hidden';
     document.getElementById('totalLifes').style.visibility = 'hidden';
     for (let i = 0; i < theWord.length; i++) {
-        document.getElementById('theLetter' + i).value = theWord[i];
-        document.getElementById('theLetter' + i).disabled = true;
+        for (let j = 0; j < theWord[i].length; j++) {
+            document.getElementById('theLetter' + i + j).value = theWord[i][j];
+            document.getElementById('theLetter' + i + j).disabled = true;
+        }
     }
 }
 
@@ -258,7 +276,7 @@ function removeFeatures() {
     }
     goodWord = 0;
     infoTextFunction('');
-    for (let i = 0; i < theWord.length; i++) {
-        document.getElementById('theLetter' + i).remove();
+    for (let i = 0; i < theWord.length; ++i) {
+        document.getElementById('setOfPlaces' + i).remove();
     }
 }

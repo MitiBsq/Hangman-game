@@ -86,6 +86,12 @@ header {
     gap: 5em;
 }
 
+.setOfLetters {
+    display: flex;
+    align-items: center;
+    gap: 1.5em; 
+}
+
 input[type=text] {
  border: 0;
  border-bottom: 1px black solid ;
